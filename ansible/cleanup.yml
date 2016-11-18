@@ -1,0 +1,5 @@
+---
+- hosts: edu
+  roles:
+    - remove
+  become: true

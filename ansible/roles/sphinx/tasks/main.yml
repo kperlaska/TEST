@@ -1,0 +1,27 @@
+---
+  - name: install pip
+    apt:
+      name: python-pip
+      state: present
+
+  - name: install sphinx
+    pip:
+      name: "{{ item }}"
+    with_items:
+      - sphinx
+      - sphinx_rtd_theme
+      
+  - name: create docuemnts
+    shell: cd /tmp/VBA/sphinx/ && make html
+
+  - name: copy files
+    shell: cp -rv /tmp/VBA/sphinx/_build/html/* /var/www/html/
+
+  - name: format website
+    replace:
+      dest: /var/www/html/_static/css/theme.css
+      regexp: "{{ item.src }}"
+      replace: "{{ item.rpl }}"
+    with_items:
+      - { src: "800px", rpl: "100%" }
+      - { src: "#2980B9", rpl: "#003333" }

@@ -1,0 +1,21 @@
+---
+  - name: install apache
+    apt:
+      name: apache2
+      state: present
+      
+  - name: config apache
+    file:
+      state: absent
+      path: /var/www/html/index.html
+
+  - name: change default port to 8080
+    replace:
+      dest: /etc/apache2/ports.conf
+      regexp: 80
+      replace: 8080
+
+  - name: restart service
+    service:
+      name: apache2
+      state: restarted

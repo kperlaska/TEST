@@ -1,0 +1,16 @@
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  config.vm.box = "ubuntu/trusty64"
+
+  config.vm.provider "virtualbox" do |vm|
+    vm.name = "DOCKER_EDU"
+    vm.cpus = 2
+    vm.memory = 2048
+  end
+  config.vm.network "private_network", type: "dhcp"
+end
+
+Vagrant.configure("2") do |config|
+  config.vm.provision "shell", path: "https://raw.githubusercontent.com/perlitos/VBA/master/install.sh"
+end

@@ -1,0 +1,9 @@
+---
+  - name: remove all docker container
+    shell: docker rm -f $(docker ps -aq)
+    ignore_errors: yes
+
+
+  - name: remove all images
+    shell: docker rmi -f $(docker images -qa)
+    ignore_errors: yes

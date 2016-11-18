@@ -1,0 +1,7 @@
+---
+- hosts: edu
+  roles:
+    - apache
+    - sphinx
+    - docker
+  become: true

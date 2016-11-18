@@ -1,0 +1,32 @@
+---
+- name: install prerequisites for docker
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - apt-transport-https
+    - ca-certificates
+
+- name: add key for docker repo
+  shell: apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
+
+- name: add repo for docker
+  shell: echo "deb https://apt.dockerproject.org/repo ubuntu-trusty main" | sudo tee /etc/apt/sources.list.d/docker.list
+
+- name: update apt-get and install docker
+  apt:
+    name: docker-engine
+    update_cache: yes
+
+- name: add vagrant user to dockergroup
+  user:
+    name: vagrant
+    append: yes
+    groups: docker
+
+- name: create cleanup tasks
+  lineinfile:
+    dest: /usr/local/bin/docker_cleanup
+    line: "cd /tmp/VBA/ansible/ && ansible-playbook cleanup.yml"
+    mode: u=rwx,g=rx,o=rx
+    create: yes
